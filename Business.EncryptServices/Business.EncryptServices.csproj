@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Profiles\UserEncrypterProfile.cs~RF14c7d6e.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="5.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core.Entities\Core.Entities.csproj" />
+    <ProjectReference Include="..\Entities.DbModels\Entities.DbModels.csproj" />
+    <ProjectReference Include="..\Entities.Dto\Entities.Dto.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Abstracts\IIngressService.cs~RF484d55a.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core.DataServices\Core.DataServices.csproj" />
+    <ProjectReference Include="..\Core.Entities\Core.Entities.csproj" />
+    <ProjectReference Include="..\Entities.DbModels\Entities.DbModels.csproj" />
+    <ProjectReference Include="..\Entities.Dto\Entities.Dto.csproj" />
+    <ProjectReference Include="..\Infra.DataAccess\Infra.DataAccess.csproj" />
+    <ProjectReference Include="..\Infra.SMTP\Infra.SMTP.csproj" />
+  </ItemGroup>
+
+</Project>

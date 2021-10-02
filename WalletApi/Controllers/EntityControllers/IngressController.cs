@@ -1,0 +1,38 @@
+﻿using Business.DataServices.Abstracts;
+using Core.Entities.Utilities.EntityGenerator.Abstracts;
+using Core.Entities.Utilities.ExpressionsConverter;
+using Entities.Dto;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq.Expressions;
+using WalletApi.Controllers.EntityControllers.Base;
+using WalletApi.Middleware.Mapper;
+
+namespace WalletApi.Controllers.EntityControllers
+{
+    [Route("api/[controller]")]
+    [Authorize]
+    [ApiController]
+    public class IngressController : EntityControllerBase<IngressDto>
+    {
+        private readonly new IIngressService _service;
+        public IngressController(IIngressService service, IEntityGenerator<IngressDto> entityGenerator) : base(service, entityGenerator)
+        {
+            _service = service;
+        }
+
+        [AllowAnonymous]
+        [Route("Max/{property}")]
+        [HttpGet]
+        public IActionResult GetMax(string property)
+        {
+           var X = MappingExpressions.GetTPropertyExpressionFromStringParameter<IngressDto>(property);
+            return Ok(_service.GetMax(X));
+        }
+
+
+       
+    }
+}
+
