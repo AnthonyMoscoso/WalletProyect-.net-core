@@ -14,7 +14,7 @@ using System.Text;
 
 namespace Business.DataServices.Specifics
 {
-    public class ExpenseTypeServices : DataBaseService<ExpenseTypeDto, ExpenseType>, IExpenseTypeService
+    public class ExpenseTypeServices : DataBaseService<ExpenseTypeDto, ExpenseType,int>, IExpenseTypeService
     {
         protected new IExpenseTypeRepository _repository;
         public ExpenseTypeServices(IExpenseTypeRepository repository, IMapper mapper, IValidator<ExpenseTypeDto> validador, IEncrypterProfile<ExpenseTypeDto> encryptor ) : base(repository, mapper, validador, encryptor)
@@ -22,18 +22,20 @@ namespace Business.DataServices.Specifics
             _repository = repository;
         }
 
-        public override string GetNewId(ExpenseTypeDto entity)
+        public override int GetNewId(ExpenseTypeDto entity)
         {
             IEnumerable<ExpenseType> list = _repository.Get(w => w.IdUser == entity.IdUser);
-            int lastData = list.OrderBy(w => w.IdType).LastOrDefault()!= null ? list.OrderBy(w => w.IdType).LastOrDefault().IdType : 0;
+            int lastData = list.OrderBy(w => w.IdType).LastOrDefault() != null ? list.OrderBy(w => w.IdType).LastOrDefault().IdType : 0;
             string sIdUser = entity.IdUser.ToString();
             string sLastDataId = lastData.ToString();
-            string idWithoutUser = lastData != 0 ? sLastDataId.Remove(0,sIdUser.Length) : 0.ToString();
-    
+            string idWithoutUser = lastData != 0 ? sLastDataId.Remove(0, sIdUser.Length) : 0.ToString();
+
             int idValue = Convert.ToInt32(idWithoutUser);
             idValue++;
             string idFormat = $"{sIdUser}{idValue}";
-            return idFormat;
+            return Convert.ToInt32( idFormat);
+
         }
+    
     }
 }

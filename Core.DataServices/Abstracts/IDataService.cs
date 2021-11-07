@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Core.DataServices.Abstracts
 {
-    public interface IDataService<T>
+    public interface IDataService<T,TKey>
     {
+        T GetByKey(TKey n);
         /// <summary>
         /// 
         /// </summary>
@@ -59,14 +60,9 @@ namespace Core.DataServices.Abstracts
         /// </summary>
         /// <param name="id">id to search</param>
         /// <returns>the id of entity to delete</returns>
-        int Delete(int id);
+        TKey Delete(TKey id);
 
-        /// <summary>
-        /// Get a single entity search by id
-        /// </summary>
-        /// <param name="id">identificator in table</param>
-        /// <returns>entity founded</returns>
-        T GetSingle(int id);
+
 
         /// <summary>
         /// Get a single entity filter by expression

@@ -12,9 +12,9 @@ using WalletApi.Middleware.Mapper;
 namespace WalletApi.Controllers.EntityControllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    [AllowAnonymous]
     [ApiController]
-    public class IngressController : EntityControllerBase<IngressDto>
+    public class IngressController : EntityControllerBase<IngressDto, int>
     {
         private readonly new IIngressService _service;
         public IngressController(IIngressService service, IEntityGenerator<IngressDto> entityGenerator) : base(service, entityGenerator)
@@ -25,14 +25,21 @@ namespace WalletApi.Controllers.EntityControllers
         [AllowAnonymous]
         [Route("Max/{property}")]
         [HttpGet]
-        public IActionResult GetMax(string property)
+        public new IActionResult GetMax(string property)
         {
-           var X = MappingExpressions.GetTPropertyExpressionFromStringParameter<IngressDto>(property);
+           var X = MappingExpressions.GetTPropertyExpressionFromStringParameter<IngressDto,decimal>(property);
             return Ok(_service.GetMax(X));
         }
 
+        [AllowAnonymous]
+        [Route("hello")]
+        [HttpGet]
+        public  IActionResult hello()
+        {
+          
+            return Ok(_service.GetProperty(w=> w.IdIngress, x=> x >12));
+        }
 
-       
     }
 }
 

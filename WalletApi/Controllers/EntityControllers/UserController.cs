@@ -11,7 +11,7 @@ namespace WalletApi.Controllers.EntityControllers
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class UserController : EntityControllerBase<UserDto>
+    public class UserController : EntityControllerBase<UserDto, int>
     {
         private readonly new IUserService _service;
 
@@ -25,6 +25,7 @@ namespace WalletApi.Controllers.EntityControllers
         [Route("Register")]
         public IActionResult Register(UserDto userDto)
         {
+            
             return Ok(_service.Register(userDto));
         }
 

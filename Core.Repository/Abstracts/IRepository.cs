@@ -7,6 +7,9 @@ namespace Core.Repository.Abstracts
 {
     public interface IRepository<T>
     {
+
+        T GetByKey<TKey>(TKey n);
+
         /// <summary>
         /// 
         /// </summary>
@@ -51,21 +54,15 @@ namespace Core.Repository.Abstracts
         /// <param name="entity"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        T Update(T entity, int id);
+        T Update<TKey>(T entity, TKey id);
 
         /// <summary>
         /// Delete entity searching for id
         /// </summary>
         /// <param name="id">id to search</param>
         /// <returns>the id of entity to delete</returns>
-        int Delete(int id);
+        TKey Delete<TKey>(TKey id);
 
-        /// <summary>
-        /// Get a single entity search by id
-        /// </summary>
-        /// <param name="id">identificator in table</param>
-        /// <returns>entity founded</returns>
-        T GetSingle(int id);
 
         /// <summary>
         /// Get a single entity filter by expression

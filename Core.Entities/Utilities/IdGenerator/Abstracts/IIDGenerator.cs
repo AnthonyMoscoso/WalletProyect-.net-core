@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Core.Entities.Utilities.IdGenerator.Abstracts
 {
-    public interface IIDGenerator<T>
+    public interface IIDGenerator<T, TKey>
     {
-        string GetNewId(T entity);
+        TKey GetNewId(T entity);
      
     }
 }

@@ -6,8 +6,8 @@ using System.Text;
 
 namespace Core.Entities.Utilities.IdGenerator
 {
-    public abstract class IDGeneratorBase<T> : IIDGenerator<T>
+    public abstract class IDGeneratorBase<T,TKey> : IIDGenerator<T,TKey>
     {
-        public abstract string GetNewId(T entity);
+        public abstract TKey GetNewId(T entity);
     }
 }

@@ -13,8 +13,6 @@ namespace Business.Validations
             RuleFor(w => w.Email).EmailAddress();
             RuleFor(w => w.Password).NotEmpty().NotNull().WithMessage("Password can't be empty");
             RuleFor(w => w.Username).NotEmpty().NotNull().WithMessage("Username can't be empty");
-        
-
         }
     }
 }

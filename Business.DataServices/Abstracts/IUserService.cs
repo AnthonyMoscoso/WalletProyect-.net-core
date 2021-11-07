@@ -4,7 +4,7 @@ using Entities.Dto.Utilities;
 
 namespace Business.DataServices.Abstracts
 {
-    public interface IUserService :  IDataService<UserDto>
+    public interface IUserService :  IDataService<UserDto,int>
     {
         UserDto Login(LoginRequest loginDto);
         UserDto Register(UserDto userDto);

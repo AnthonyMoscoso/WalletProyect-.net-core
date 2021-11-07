@@ -14,7 +14,7 @@ using System.Text;
 
 namespace Business.DataServices.Specifics
 {
-    public class IngressTypeService : DataBaseService<IngressTypeDto, IngressType>, IIngressTypeService
+    public class IngressTypeService : DataBaseService<IngressTypeDto, IngressType,int>, IIngressTypeService
     {
         protected new IIngressTypeRepository _repository;
         public IngressTypeService(IIngressTypeRepository repository, IMapper mapper, IValidator<IngressTypeDto> validador, IEncrypterProfile<IngressTypeDto> encryptor ) : base(repository, mapper, validador, encryptor)
@@ -22,7 +22,7 @@ namespace Business.DataServices.Specifics
             _repository = repository;
         }
 
-        public override string GetNewId(IngressTypeDto entity)
+        public override int GetNewId(IngressTypeDto entity)
         {
             IEnumerable<IngressType> list = _repository.Get(w => w.IdUser == entity.IdUser);
             int lastData = list.OrderBy(w => w.IdType).LastOrDefault() != null ? list.OrderBy(w => w.IdType).LastOrDefault().IdType : 0;
@@ -32,7 +32,7 @@ namespace Business.DataServices.Specifics
             int idValue = Convert.ToInt32(idWithoutUser);
             idValue++;
             string idFormat = $"{sIdUser}{idValue}";
-            return idFormat;
+            return Convert.ToInt32( idFormat);
         }
     }
 }

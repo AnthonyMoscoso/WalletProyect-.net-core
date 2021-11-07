@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Entities.Dto
 {
-    public class ExpenseDto : BaseEntity
+    public class ExpenseDto : BaseEntity<int>
     {
         public int IdExpense { get; set; }
         public int? IdType { get; set; }

@@ -14,8 +14,8 @@ using System.Linq.Expressions;
 
 namespace Core.DataServices.Specifics
 {
-    public abstract class DataBaseService<TEntity, T> : IDataService<TEntity>, IIDGenerator<TEntity>
-        where TEntity : class, IEntity, new()
+    public abstract class DataBaseService<TEntity, T,TKey> : IDataService<TEntity,TKey>, IIDGenerator<TEntity,TKey>
+        where TEntity : class, IEntity<TKey>, new()
     {
         protected IMapper _mapper;
         protected IRepository<T> _repository;
@@ -30,7 +30,7 @@ namespace Core.DataServices.Specifics
             _encryptor = encryptor;
             _name = typeof(T).Name;
         }
-        public int Delete(int id)
+        public TKey Delete(TKey id)
         {
             return _repository.Delete(id);
         }
@@ -52,17 +52,7 @@ namespace Core.DataServices.Specifics
 
         }
 
-        public TEntity GetSingle(int id)
-        {
-            T result = _repository.GetSingle(id);
-            if (result != null)
-            {
-                TEntity entity = _mapper.Map<TEntity>(result);
-                return _encryptor != null ? _encryptor.DecryptEntity(entity) : entity;
-            }
-            throw new Exception($"{_name} with Id {id} not was found");
 
-        }
 
         public TEntity GetSingle(Expression<Func<TEntity, bool>> predicate)
         {
@@ -84,7 +74,7 @@ namespace Core.DataServices.Specifics
                 ValidationResult validationResult = _validator.Validate(entity);
                 if (validationResult.IsValid)
                 {
-                    entity.ID = Convert.ToInt32(GetNewId(entity));
+                    entity.ID = GetNewId(entity);
                     return InsertEntity(entity);
                 }
                 throw new Exception(validationResult.Errors[0].ErrorCode + "\n " + validationResult.Errors[0].ErrorMessage);
@@ -102,7 +92,7 @@ namespace Core.DataServices.Specifics
             entity = _encryptor != null ? _encryptor.EncryptEntity(entity) : entity;
             T tentity = _mapper.Map<T>(entity);
             _repository.Insert(tentity);
-            return GetSingle(entity.ID);
+            return GetByKey(entity.ID);
         }
 
         public TEntity Update(TEntity entity)
@@ -129,10 +119,10 @@ namespace Core.DataServices.Specifics
             entity = _encryptor != null ? _encryptor.EncryptEntity(entity) : entity;
             T tentity = _mapper.Map<T>(entity);
             _repository.Update(tentity, entity.ID);
-            return GetSingle(entity.ID);
+            return GetByKey(entity.ID);
         }
 
-        public abstract string GetNewId(TEntity entity);
+        public abstract TKey GetNewId(TEntity entity);
 
         public TProperty GetSingleProperty<TProperty>(Expression<Func<TEntity, TProperty>> property, Expression<Func<TProperty, bool>> filter)
         {
@@ -337,6 +327,17 @@ namespace Core.DataServices.Specifics
             IEnumerable<T> result = _repository.GetTop(expression_property, quantity, MapExpression(expression));
             IEnumerable<TEntity> list = _mapper.Map<IEnumerable<TEntity>>(result);
             return _encryptor != null ? _encryptor.DecryptRange(list) : list;
+        }
+
+        public TEntity GetByKey(TKey n)
+        {
+            T result = _repository.GetByKey(n);
+            if (result != null)
+            {
+                TEntity entity = _mapper.Map<TEntity>(result);
+                return _encryptor != null ? _encryptor.DecryptEntity(entity) : entity;
+            }
+            throw new Exception($"{_name} with Id {n} not was found");
         }
     }
 }

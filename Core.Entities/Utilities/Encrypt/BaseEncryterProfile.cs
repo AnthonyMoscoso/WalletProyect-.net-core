@@ -13,7 +13,7 @@ namespace Core.Entities.Utilities.Encrypt
         private readonly IEncrypt _encrypt;
         private readonly string _name;
 
-        private PropertyInfo[] _properties;
+    
         private readonly ICollection<string> parameters;
 
         public BaseEncryterProfile(IEncrypt encrypt)
@@ -22,7 +22,7 @@ namespace Core.Entities.Utilities.Encrypt
             _encrypt = encrypt;
 
             _name = typeof(T).Name;
-            _properties = typeof(T).GetProperties();
+     
         }
 
         /// <summary>

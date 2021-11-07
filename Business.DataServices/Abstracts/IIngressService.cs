@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Business.DataServices.Abstracts
 {
-    public interface IIngressService : IDataService<IngressDto>
+    public interface IIngressService : IDataService<IngressDto,int>
     {
     }
 }

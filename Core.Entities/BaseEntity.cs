@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Core.Entities
 {
-    public abstract class BaseEntity : IEntity
+    public abstract class BaseEntity<TKey> : IEntity<TKey>
     {
-        public abstract int ID { get; set; }
+        public abstract TKey  ID { get; set; }
         public DateTime CreateDate { get ; set ; }
         public DateTime LastUpdateDate { get; set; }
     }

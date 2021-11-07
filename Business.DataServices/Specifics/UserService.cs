@@ -16,7 +16,7 @@ using System.Linq;
 
 namespace Business.DataServices.Specifics
 {
-    public class UserService : DataBaseService<UserDto, Users>, IUserService
+    public class UserService : DataBaseService<UserDto, Users,int>, IUserService
     {
         protected new IUserRepository _repository;
         protected IEmailManager _emailManager;
@@ -51,11 +51,11 @@ namespace Business.DataServices.Specifics
             return "NotFound email";
         }
 
-        public override string GetNewId(UserDto entity)
+        public override int GetNewId(UserDto entity)
         {
             int last_id =_repository.GetLastProperty(w => w.IdUser);       
             last_id++;
-            return last_id.ToString();
+            return last_id;
         }
 
         public UserDto Login(LoginRequest loginDto)

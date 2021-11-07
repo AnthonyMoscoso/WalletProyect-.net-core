@@ -14,7 +14,7 @@ using System.Text;
 
 namespace Business.DataServices.Specifics
 {
-    public class ExpenseServices : DataBaseService<ExpenseDto, Expense>, IExpenseService
+    public class ExpenseServices : DataBaseService<ExpenseDto, Expense,int>, IExpenseService
     {
         protected new IExpenseRepository _repository;
         public ExpenseServices(IExpenseRepository repository, IMapper mapper, IValidator<ExpenseDto> validador, IEncrypterProfile<ExpenseDto> encryptor ) : base(repository, mapper, validador, encryptor)
@@ -22,7 +22,7 @@ namespace Business.DataServices.Specifics
             _repository = repository;
         }
 
-        public override string GetNewId(ExpenseDto entity)
+        public override int GetNewId(ExpenseDto entity)
         {
             IEnumerable<Expense> list = _repository.Get(w => w.IdUser == entity.IdUser);
             int lastData = list.OrderBy(w => w.IdExpense).LastOrDefault() != null ? list.OrderBy(w => w.IdExpense).LastOrDefault().IdExpense : 0;
@@ -32,7 +32,7 @@ namespace Business.DataServices.Specifics
             int idValue = Convert.ToInt32(idWithoutUser);
             idValue++;
             string idFormat = $"{sIdUser}{idValue}";
-            return idFormat;
+            return Convert.ToInt32( idFormat);
         }
     }
 }

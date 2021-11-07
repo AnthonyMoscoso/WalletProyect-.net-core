@@ -62,6 +62,21 @@ namespace Core.Entities.Utilities.ExpressionsConverter
             return expression;
         }
 
+        public static Expression<Func<T, TProperty>> GetTPropertyExpressionFromStringParameter<T, TProperty>(string parameter)
+        {
+            ParameterExpression parameterExpression = Expression.Parameter(typeof(T), "w");
+            MemberExpression memberExpression = Expression.Property(parameterExpression, parameter);
+            if (typeof(T).GetProperty(parameter) == null)
+            {
+                throw new Exception($"{typeof(T).Name} dont have {parameter} property");
+            }
+            PropertyInfo property = typeof(T).GetProperty(parameter);
+            Type type = property.PropertyType;
+            TypeCode typeCode = Type.GetTypeCode(type);
+            Expression<Func<T, TProperty>> expression = Expression.Lambda<Func<T, TProperty>>(memberExpression, parameterExpression);
+            return expression;
+        }
+
         public static dynamic GetTPropertyExpressionFromStringParameter<T>(string value,PropertyList propertyList)
         {
             ParameterExpression parameter = Expression.Parameter(typeof(T), "w");

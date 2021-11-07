@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Business.DataServices.Abstracts
 {
-    public interface IExpenseService : IDataService<ExpenseDto>
+    public interface IExpenseService : IDataService<ExpenseDto,int>
     {
     }
 }

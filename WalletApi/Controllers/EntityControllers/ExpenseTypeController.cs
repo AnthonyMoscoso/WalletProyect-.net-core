@@ -15,7 +15,7 @@ namespace WalletApi.Controllers.EntityControllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class ExpenseTypeController : EntityControllerBase<ExpenseTypeDto>
+    public class ExpenseTypeController : EntityControllerBase<ExpenseTypeDto, int>
     {
         private readonly new IExpenseTypeService _service;
         public ExpenseTypeController(IExpenseTypeService service, IEntityGenerator<ExpenseTypeDto> entityGenerator) : base(service, entityGenerator)

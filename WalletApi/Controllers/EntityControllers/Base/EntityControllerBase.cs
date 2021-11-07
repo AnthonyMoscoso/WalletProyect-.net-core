@@ -19,13 +19,13 @@ namespace WalletApi.Controllers.EntityControllers.Base
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EntityControllerBase<T> : ControllerBase
-        where T : class, IEntity, new()
+    public class EntityControllerBase<T, TKey> : ControllerBase
+        where T : class, IEntity<TKey>, new()
     {
 
-        protected IDataService<T> _service;
-        protected IEntityGenerator<T> _entityGenerator; 
-        public EntityControllerBase(IDataService<T> service, IEntityGenerator<T> entityGenerator)
+        protected IDataService<T,TKey> _service;
+        protected IEntityGenerator<T> _entityGenerator;
+        public EntityControllerBase(IDataService<T,TKey> service, IEntityGenerator<T> entityGenerator)
         {
             _service = service;
             _entityGenerator = entityGenerator;
@@ -41,16 +41,18 @@ namespace WalletApi.Controllers.EntityControllers.Base
 
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Get()
         {
             return Ok(_service.Get());
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("{id}")]
-        public IActionResult GetSingle(int id)
+        public IActionResult GetSingle(TKey id)
         {
-            return Ok(_service.GetSingle(id));
+            return Ok(_service.GetByKey(id));
         }
 
 
@@ -116,7 +118,7 @@ namespace WalletApi.Controllers.EntityControllers.Base
         [Route("Property/{property}")]
         public IActionResult Count(string property)
         {
-         
+
             return Ok(_service.GetProperty(MappingExpressions.GetTPropertyExpressionFromStringParameter<T>(property)));
         }
 
@@ -165,8 +167,9 @@ namespace WalletApi.Controllers.EntityControllers.Base
             return Ok(_service.Update(entity));
         }
 
-        [HttpDelete]
-        public IActionResult Delete(int id)
+        [HttpDelete("{id}")]
+        [AllowAnonymous]
+        public IActionResult Delete(TKey id)
         {
             return Ok(_service.Delete(id));
         }

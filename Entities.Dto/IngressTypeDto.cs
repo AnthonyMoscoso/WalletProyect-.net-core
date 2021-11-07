@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Entities.Dto
 {
-    public class IngressTypeDto : BaseEntity
+    public class IngressTypeDto : BaseEntity<int>
     {
         public int IdType { get; set; }
         public int IdUser { get; set; }

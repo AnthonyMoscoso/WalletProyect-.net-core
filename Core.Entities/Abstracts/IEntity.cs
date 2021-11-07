@@ -4,9 +4,10 @@ using System.Text;
 
 namespace Core.Entities.Abstracts
 {
-    public interface IEntity
+    public interface IEntity<TKey>
     {
-        int ID { get; set; }
+
+        TKey ID { get; set; }
         DateTime CreateDate { get; set; }
         DateTime LastUpdateDate { get; set; }
     }

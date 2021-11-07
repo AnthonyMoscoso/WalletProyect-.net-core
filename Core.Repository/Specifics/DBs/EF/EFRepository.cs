@@ -41,16 +41,16 @@ namespace Core.Repository.Specifics.DBs.EF
         {
             return _table.Where(predicate).Select(property).Count();
         }
-        public int Delete(int id)
+        public TKey Delete<TKey>(TKey id)
         {
-            T search = GetSingle(id);
+            T search = GetByKey(id);
             if (search != null)
             {
                 _table.Remove(search);
                 Save();
                 return id;
             }
-            throw new Exception($"{_name} with {_identificator} : {id} not was found");
+            throw new Exception($"{_name} with { typeof(TKey).Name} : {id} not was found");
 
         }
         public void Dispose()
@@ -68,39 +68,32 @@ namespace Core.Repository.Specifics.DBs.EF
         }
         public TProperty GetFirstProperty<TProperty>(Expression<Func<T, TProperty>> property)
         {
-            MemberExpression memberExpression = property.Body as MemberExpression;
-            string property_name = memberExpression.Member.Name;
-            return _table.Select(property).OrderBy(w => property_name).FirstOrDefault();
+
+            return _table.OrderBy(property).Select(property).FirstOrDefault();
         }
         public TProperty GetFirstProperty<TProperty>(Expression<Func<T, TProperty>> property, Expression<Func<TProperty, bool>> filter)
         {
-            MemberExpression memberExpression = property.Body as MemberExpression;
-            string property_name = memberExpression.Member.Name;
-            return _table.Select(property).Where(filter).OrderBy(w => property_name).FirstOrDefault();
+
+            return _table.OrderBy(property).Select(property).Where(filter).FirstOrDefault();
         }
         public TProperty GetFirstProperty<TProperty>(Expression<Func<T, TProperty>> property, Expression<Func<T, bool>> entityFilter)
         {
-            MemberExpression memberExpression = property.Body as MemberExpression;
-            string property_name = memberExpression.Member.Name;
-            return _table.Where(entityFilter).Select(property).OrderBy(w => property_name).FirstOrDefault();
+            return _table.OrderBy(property).Where(entityFilter).Select(property).FirstOrDefault();
         }
         public TProperty GetLastProperty<TProperty>(Expression<Func<T, TProperty>> property)
         {
-            MemberExpression memberExpression = property.Body as MemberExpression;
-            string property_name = memberExpression.Member.Name;
-            return _table.Select(property).OrderBy(w => property_name).LastOrDefault();
+   
+            return _table.OrderBy(property).Select(property).LastOrDefault();
         }
         public TProperty GetLastProperty<TProperty>(Expression<Func<T, TProperty>> property, Expression<Func<TProperty, bool>> filter)
         {
-            MemberExpression memberExpression = property.Body as MemberExpression;
-            string property_name = memberExpression.Member.Name;
-            return _table.Select(property).Where(filter).OrderBy(w => property_name).LastOrDefault();
+
+            return _table.OrderBy(property).Select(property).Where(filter).LastOrDefault();
         }
         public TProperty GetLastProperty<TProperty>(Expression<Func<T, TProperty>> property, Expression<Func<T, bool>> entityFilter)
         {
-            MemberExpression memberExpression = property.Body as MemberExpression;
-            string property_name = memberExpression.Member.Name;
-            return _table.Where(entityFilter).Select(property).OrderBy(w => property_name).LastOrDefault();
+
+            return _table.OrderBy(property).Where(entityFilter).Select(property).LastOrDefault();
         }
         public IEnumerable<T> GetOrder<TProperty>(Expression<Func<T, TProperty>> property)
         {           
@@ -160,12 +153,14 @@ namespace Core.Repository.Specifics.DBs.EF
         {
             _context.SaveChanges();
         }
-        public T Update(T entity, int id)
+        public T Update<TKey>(T entity, TKey id)
         {
-            T search = GetSingle(id);
+            T search = GetByKey(id);
             if (search != null)
             {
-                _context.Entry(search).CurrentValues.SetValues(entity);
+                 _context.Entry(search).CurrentValues.SetValues(entity);
+                Save();
+                return GetByKey(id);
             }
             throw new Exception($"{_name} with {_identificator} : {id} not was found");
         }
@@ -221,5 +216,14 @@ namespace Core.Repository.Specifics.DBs.EF
         {
             return _table.Where(expression).OrderBy(orderProperty).Take(quantity);
         }
+
+        public T GetByKey<TKey>(TKey n)
+        {
+            return _table.Find(n);
+        }
+
+
+
+   
     }
 }

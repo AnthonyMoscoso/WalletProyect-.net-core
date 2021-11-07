@@ -9,8 +9,8 @@ namespace WalletApi.Controllers.EntityControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    public class ExpenseController :EntityControllerBase<ExpenseDto>
+
+    public class ExpenseController :EntityControllerBase<ExpenseDto,int>
     {
         private readonly new IExpenseService _service;
 

@@ -12,7 +12,7 @@ namespace Business.EncryptServices.Profiles
     {
         public IngressEncrypterProfile(IEncrypt encrypt) : base(encrypt)
         {
-            //AddParameter(w=> w.Tittle);
+            AddParameter(w=> w.Tittle);
         }
 
 
